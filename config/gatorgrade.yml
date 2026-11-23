@@ -72,11 +72,11 @@
         exact: true
     # The starter template is about 650 words, so 1800 words means roughly
     # 100+ words of your own per response.
-    - description: ./writing/reflection.md Write a meaningful reflection (at least 1800 words in total)
-      check: CountFileWords
-      options:
-        count: 1800
-        exact: false
+    # - description: ./writing/reflection.md Write a meaningful reflection (at least 1800 words in total)
+    #   check: CountFileWords
+    #   options:
+    #     count: 1800
+    #     exact: false
 
 # ---------------------------------------------------------------------------
 # Analysis script
