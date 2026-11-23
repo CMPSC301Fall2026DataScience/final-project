@@ -35,12 +35,6 @@ jobs:
       # ---------------------------------------------------------------
       # GatorGrade
       # ---------------------------------------------------------------
-#      - name: Run GatorGrade
-#        if: always()
-#        run: |
-#          pipx install gatorgrade
-#          pipx inject gatorgrade 'click==8.1.7' --force
-#          gatorgrade --config config/gatorgrade.yml
 
       - name: Run GatorGrader with GatorGrade
         if: always()
@@ -51,40 +45,40 @@ jobs:
 
 
 
-# ---------------------------------------------------------------
-      # R, packages and Quarto
-      # ---------------------------------------------------------------
-      - name: Set up R
-        if: always()
-        uses: r-lib/actions/setup-r@v2
-        with:
-          use-public-rspm: true
+# # ---------------------------------------------------------------
+#       # R, packages and Quarto
+#       # ---------------------------------------------------------------
+#       - name: Set up R
+#         if: always()
+#         uses: r-lib/actions/setup-r@v2
+#         with:
+#           use-public-rspm: true
 
-      # Pre-installs common packages as fast binaries. If your project uses a
-      # package that is not listed here, add it as "any::packagename".
-      - name: Install R packages
-        if: always()
-        uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          packages: |
-            any::tidyverse
-            any::plotly
-            any::rmarkdown
-            any::knitr
-            any::broom
-            any::car
-            any::rpart.plot
-            any::randomForest
-            any::nnet
+#       # Pre-installs common packages as fast binaries. If your project uses a
+#       # package that is not listed here, add it as "any::packagename".
+#       - name: Install R packages
+#         if: always()
+#         uses: r-lib/actions/setup-r-dependencies@v2
+#         with:
+#           packages: |
+#             any::tidyverse
+#             any::plotly
+#             any::rmarkdown
+#             any::knitr
+#             any::broom
+#             any::car
+#             any::rpart.plot
+#             any::randomForest
+#             any::nnet
 
-      - name: Set up Quarto
-        if: always()
-        uses: quarto-dev/quarto-actions/setup@v2
+#       - name: Set up Quarto
+#         if: always()
+#         uses: quarto-dev/quarto-actions/setup@v2
 
-      - name: Run src/analysis.r
-        if: always()
-        run: Rscript src/analysis.r
+#       - name: Run src/analysis.r
+#         if: always()
+#         run: Rscript src/analysis.r
 
-      - name: Render writing/report.qmd
-        if: always()
-        run: quarto render writing/report.qmd
+#       - name: Render writing/report.qmd
+#         if: always()
+#         run: quarto render writing/report.qmd
