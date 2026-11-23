@@ -32,14 +32,26 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Run GatorGrade
+      # ---------------------------------------------------------------
+      # GatorGrade
+      # ---------------------------------------------------------------
+#      - name: Run GatorGrade
+#        if: always()
+#        run: |
+#          pipx install gatorgrade
+#          pipx inject gatorgrade 'click==8.1.7' --force
+#          gatorgrade --config config/gatorgrade.yml
+
+      - name: Run GatorGrader with GatorGrade
         if: always()
-        run: |
-          pipx install gatorgrade
-          pipx inject gatorgrade 'click==8.1.7' --force
+        run:  |
+          pip install gatorgrade
           gatorgrade --config config/gatorgrade.yml
 
-      # ---------------------------------------------------------------
+
+
+
+# ---------------------------------------------------------------
       # R, packages and Quarto
       # ---------------------------------------------------------------
       - name: Set up R
