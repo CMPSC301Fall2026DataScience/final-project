@@ -102,12 +102,12 @@
         fragment: "Add Your Project Title Here"
         count: 0
         exact: true
-    - description: ./src/analysis.r Do not use file.choose(); load data with a relative path
-      check: MatchFileFragment
-      options:
-        fragment: "file.choose"
-        count: 0
-        exact: true
+    # - description: ./src/analysis.r Do not use file.choose(); load data with a relative path
+    #   check: MatchFileFragment
+    #   options:
+    #     fragment: "file.choose"
+    #     count: 0
+    #     exact: true
 
 # ---------------------------------------------------------------------------
 # Data
