@@ -1,0 +1,129 @@
+# GatorGrade checks for the CS301 final project.
+# Run locally with: gatorgrade --config config/gatorgrade.yml
+
+# ---------------------------------------------------------------------------
+# Quarto report (the main graded document)
+# ---------------------------------------------------------------------------
+- writing/report.qmd:
+    - description: Ensure that writing/report.qmd exists
+      check: ConfirmFileExists
+    - description: ./writing/report.qmd Complete all TODOs, remove the TODO markers
+      check: MatchFileFragment
+      options:
+        fragment: TODO
+        count: 0
+        exact: true
+    - description: ./writing/report.qmd Delete all EXAMPLE blocks
+      check: MatchFileFragment
+      options:
+        fragment: EXAMPLE
+        count: 0
+        exact: true
+    - description: ./writing/report.qmd Delete the 'Add Your Name Here' prompts
+      check: MatchFileFragment
+      options:
+        fragment: "Add Your Name Here"
+        count: 0
+        exact: true
+    - description: ./writing/report.qmd Delete the 'Add Your Project Title Here' prompt
+      check: MatchFileFragment
+      options:
+        fragment: "Add Your Project Title Here"
+        count: 0
+        exact: true
+
+- writing/report.html:
+    - description: Ensure that the rendered report writing/report.html is committed
+      check: ConfirmFileExists
+
+- writing/references.bib:
+    - description: Ensure that writing/references.bib exists
+      check: ConfirmFileExists
+    - description: ./writing/references.bib Include at least four BibTeX entries (two textbooks + two peer-reviewed sources)
+      check: MatchFileFragment
+      options:
+        fragment: "@"
+        count: 4
+        exact: false
+
+# ---------------------------------------------------------------------------
+# Reflection
+# ---------------------------------------------------------------------------
+- writing/reflection.md:
+    - description: Ensure that writing/reflection.md exists
+      check: ConfirmFileExists
+    - description: ./writing/reflection.md Complete all TODOs, remove the TODO markers
+      check: MatchFileFragment
+      options:
+        fragment: TODO
+        count: 0
+        exact: true
+    - description: ./writing/reflection.md Delete the 'Add Your Name Here' prompts
+      check: MatchFileFragment
+      options:
+        fragment: "Add Your Name Here"
+        count: 0
+        exact: true
+    - description: ./writing/reflection.md Delete the 'Add Your Project Title Here' prompt
+      check: MatchFileFragment
+      options:
+        fragment: "Add Your Project Title Here"
+        count: 0
+        exact: true
+    # The starter template is about 650 words, so 1800 words means roughly
+    # 100+ words of your own per response.
+    - description: ./writing/reflection.md Write a meaningful reflection (at least 1800 words in total)
+      check: CountFileWords
+      options:
+        count: 1800
+        exact: false
+
+# ---------------------------------------------------------------------------
+# Analysis script
+# ---------------------------------------------------------------------------
+- src/analysis.r:
+    - description: Ensure that src/analysis.r exists
+      check: ConfirmFileExists
+    - description: ./src/analysis.r Complete all TODOs, remove the TODO markers
+      check: MatchFileFragment
+      options:
+        fragment: TODO
+        count: 0
+        exact: true
+    - description: ./src/analysis.r Delete the 'Add Your Name Here' prompts
+      check: MatchFileFragment
+      options:
+        fragment: "Add Your Name Here"
+        count: 0
+        exact: true
+    - description: ./src/analysis.r Delete the 'Add Your Project Title Here' prompt
+      check: MatchFileFragment
+      options:
+        fragment: "Add Your Project Title Here"
+        count: 0
+        exact: true
+    - description: ./src/analysis.r Do not use file.choose(); load data with a relative path
+      check: MatchFileFragment
+      options:
+        fragment: "file.choose"
+        count: 0
+        exact: true
+
+# ---------------------------------------------------------------------------
+# Data
+# ---------------------------------------------------------------------------
+- data/README.md:
+    - description: ./data/README.md Complete the data provenance section (remove all TODOs)
+      check: MatchFileFragment
+      options:
+        fragment: TODO
+        count: 0
+        exact: true
+
+# ---------------------------------------------------------------------------
+# Commit history
+# ---------------------------------------------------------------------------
+- description: Have at least a minimum number of spread-out commits (10) in the repository
+  check: CountCommits
+  options:
+    count: 10

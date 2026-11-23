@@ -1,0 +1,435 @@
+---
+title: "Add Your Project Title Here"
+subtitle: "Data Analytics (CS301) Final Project"
+author:
+  - "Group Name"
+  - "Add Your Name Here"
+  - "Add Your Name Here (delete this line if working individually)"
+date: today
+format:
+  html:
+    toc: true
+    number-sections: true
+    code-fold: show
+    code-tools: true
+    embed-resources: true
+    df-print: paged
+    fig-width: 7
+    fig-height: 4.5
+execute:
+  echo: true
+  warning: false
+  message: false
+bibliography: references.bib
+---
+
+<!--
+HOW TO USE THIS TEMPLATE
+
+* Replace every TODO with your own writing, code, plots and results.
+  Delete each TODO marker once that part is done.
+* Blocks marked EXAMPLE show what a finished section looks like, using R's
+  built-in ToothGrowth data. Read them, then DELETE every EXAMPLE block
+  (the whole callout, including its code chunks) before you submit.
+* Render often (RStudio "Render" button, or `quarto render writing/report.qmd`
+  in a terminal). The document must render from top to bottom without errors.
+* Load data with relative paths such as "../data/my_data.csv". This file
+  lives in writing/, so ".." points to the top folder of your repository.
+* Cite sources with [@key], where key is an entry in writing/references.bib.
+  The References section at the end is built for you.
+* Delete this whole comment block when you are done.
+-->
+
+```{r}
+#| label: setup
+#| code-summary: "Setup: packages and options"
+
+# Install required packages if they are not already available.
+# Add every package you use to this vector.
+required_packages <- c("plotly", "tidyverse")
+missing_packages <- required_packages[
+  !required_packages %in% installed.packages()[, "Package"]
+]
+if (length(missing_packages) > 0) {
+  install.packages(missing_packages, repos = "https://cloud.r-project.org")
+}
+
+library(plotly)
+library(tidyverse)
+
+theme_set(theme_minimal(base_size = 12))
+set.seed(301)  # makes shuffling, sampling and model fitting reproducible
+```
+
+# Introduction and Research Question {#sec-intro}
+
+## Motivation and background
+
+TODO: In one or two paragraphs, introduce your topic. Why does it matter, and
+to whom (stakeholders)? Summarize what is already known by citing **at least
+two peer-reviewed sources**, for example "Prior work found ... `[@author2020]`."
+Say what gap or open question your project addresses.
+
+## Research question
+
+TODO: State **one** focused research question in a single sentence.
+
+> **Research question:** TODO
+
+TODO: Briefly explain why your question is *researchable*:
+
+- **Specific:** which population, variables and time span does it cover?
+- **Measurable:** which variables in your data measure the ideas in your question?
+- **Answerable:** why can statistics on this data answer the question?
+
+# Hypotheses {#sec-hypotheses}
+
+TODO: Write your hypotheses as testable pairs: **two** pairs if you work
+individually, **three** if you work as a pair. Each null hypothesis
+(H~0~) states "no effect / no difference / no relationship". Each alternative
+(H~1~) states the effect you expect. Name the variables and the test you plan to
+use. Use a significance level of α = 0.05 unless you justify another.
+
+| # | Null hypothesis (H~0~) | Alternative hypothesis (H~1~) | Variables (outcome ~ predictor) | Planned model / test |
+|---|---|---|---|---|
+| 1 | TODO | TODO | TODO | TODO |
+| 2 | TODO | TODO | TODO | TODO |
+| 3 | TODO (pairs only) | TODO (pairs only) | TODO | TODO |
+
+: Hypotheses tested in this project {#tbl-hypotheses}
+
+::: {.callout-note collapse="true"}
+## EXAMPLE: hypotheses (delete this block)
+
+*Research question:* Does the dose and delivery method of vitamin C affect tooth
+growth in guinea pigs?
+
+| # | H~0~ | H~1~ | Variables | Test |
+|---|---|---|---|---|
+| 1 | Mean tooth length is the same for orange juice (OJ) and ascorbic acid (VC). | Mean tooth length differs between OJ and VC. | `len ~ supp` | Welch two-sample t-test |
+| 2 | Mean tooth length is the same at all three doses, and dose and supplement do not interact. | Mean tooth length differs by dose, or the effect of dose depends on the supplement. | `len ~ dose * supp` | Two-way ANOVA |
+:::
+
+# Data {#sec-data}
+
+## Source and provenance
+
+TODO: Describe your dataset. Fill in the table and add a paragraph explaining
+how the data were collected and why this source is credible. Only **free and
+publicly available** data may be used. Also fill in `data/README.md`.
+
+| Item | Description |
+|---|---|
+| Name of dataset | TODO |
+| Publisher / organization | TODO |
+| URL (and date accessed) | TODO |
+| License or terms of use | TODO |
+| How the data were collected | TODO (survey, sensors, administrative records, ...) |
+| Unit of observation (one row =) | TODO |
+| Number of rows and columns used | TODO |
+| Time period / geography covered | TODO |
+
+: Data provenance {#tbl-provenance}
+
+## Loading the data
+
+```{r}
+#| label: load-data
+
+# TODO: Load your data with a relative path, for example:
+# my_data <- read_csv("../data/my_data.csv")
+# glimpse(my_data)
+```
+
+## Data dictionary
+
+TODO: List the variables you actually use in your analysis.
+
+| Variable | Type (numeric / categorical / date / ...) | Units or levels | Description | Role (outcome / predictor) |
+|---|---|---|---|---|
+| TODO | TODO | TODO | TODO | TODO |
+
+: Variables used in the analysis {#tbl-dictionary}
+
+## Cleaning and wrangling
+
+TODO: Clean and transform the data. Before each step, write a sentence that
+explains **why** it is needed. Report how many rows you removed and why, and
+how you handled missing values.
+
+```{r}
+#| label: clean-data
+
+# TODO: Clean and wrangle your data (filter, select, mutate, drop_na, ...).
+```
+
+# Exploratory Data Analysis: Looking for Non-Random Patterns {#sec-eda}
+
+Before running any formal test, use plots to check whether the data contain a
+pattern that looks **systematic rather than random**. If the plots show no
+pattern at all, revisit your question or your variables now, before you build
+models.
+
+## Descriptive statistics
+
+```{r}
+#| label: descriptive-stats
+
+# TODO: Summarize the variables in your hypotheses (n, mean, sd, median,
+# counts per group, number of missing values, ...).
+```
+
+TODO: In two or three sentences, explain what the summary tells you.
+
+## Exploratory plots
+
+TODO: Make at least **four** plots if you work individually, or at least
+**six** if you work as a pair. Use at least two different kinds of plot
+(e.g., histogram, boxplot, scatterplot with trend line, bar chart, time series,
+heat map). At least one plot must be interactive (`plotly`). For **every** plot:
+
+1. give it a figure label and caption (`#| label: fig-...` and `#| fig-cap:`),
+2. label the axes with variable names and units, and
+3. write two or three sentences below it: *What does the plot show? Does the
+   pattern look non-random? Which hypothesis does it motivate?*
+
+```{r}
+#| label: fig-eda-1
+#| fig-cap: "TODO: Write a caption for this plot."
+
+# TODO: Create your first exploratory plot.
+```
+
+TODO: Interpret the plot above.
+
+## Is the pattern real? A shuffle comparison
+
+TODO: Make **at least one** "shuffle comparison". Randomly permute (shuffle)
+your outcome variable so that any real relationship is destroyed, then plot the
+real data next to a few shuffled copies. If the real panel looks clearly
+different from the shuffled ones, your pattern is unlikely to be random noise.
+
+```{r}
+#| label: fig-shuffle
+#| fig-cap: "TODO: Write a caption for your shuffle comparison."
+
+# TODO: Create your shuffle comparison (see the EXAMPLE below).
+```
+
+TODO: Interpret the shuffle comparison.
+
+::: {.callout-note collapse="true"}
+## EXAMPLE: exploratory plots and a shuffle comparison (delete this block)
+
+```{r}
+#| label: fig-example-boxplot
+#| fig-cap: "EXAMPLE: Tooth length by vitamin C dose and supplement type (n = 60)."
+
+tooth <- ToothGrowth |>
+  mutate(dose = factor(dose), supp = factor(supp, labels = c("Orange juice", "Ascorbic acid")))
+
+ggplot(tooth, aes(x = dose, y = len, fill = supp)) +
+  geom_boxplot(alpha = 0.7) +
+  geom_point(position = position_jitterdodge(jitter.width = 0.15), alpha = 0.6) +
+  labs(x = "Dose (mg/day)", y = "Tooth length", fill = "Supplement")
+```
+
+*Interpretation:* Tooth length rises steadily with dose for both supplements.
+At 0.5 and 1 mg/day, orange juice seems to give longer teeth than ascorbic acid,
+but the boxes overlap at 2 mg/day. This motivates Hypothesis 2 (dose effect and
+interaction) and Hypothesis 1 (supplement effect).
+
+```{r}
+#| label: fig-example-shuffle
+#| fig-cap: "EXAMPLE: Real data (top left) compared with five copies in which tooth length was randomly shuffled."
+#| fig-height: 5
+
+# Shuffle the outcome within five copies of the data, then add the real data.
+shuffled <- map(1:5, \(i) tooth |> mutate(len = sample(len), panel = paste("Shuffled", i))) |>
+  list_rbind()
+lineup <- bind_rows(tooth |> mutate(panel = "Real data"), shuffled) |>
+  mutate(panel = fct_relevel(panel, "Real data"))
+
+ggplot(lineup, aes(x = dose, y = len)) +
+  geom_boxplot(fill = "grey85") +
+  facet_wrap(~panel) +
+  labs(x = "Dose (mg/day)", y = "Tooth length")
+```
+
+*Interpretation:* Only the real-data panel shows a clear upward trend with dose.
+The shuffled panels look flat. This suggests the dose pattern is not just
+random variation, so it is worth testing formally.
+:::
+
+# Model Selection and Justification {#sec-models}
+
+TODO: Choose at least **two** statistical models or tests if you work
+individually, or at least **three** if you work as a pair (e.g., t-test,
+ANOVA, MANOVA, chi-square test, correlation test, linear or logistic
+regression, decision tree, random forest, neural network). Fill in the table,
+then justify each choice in a short paragraph.
+
+| Model / test | Hypothesis | Outcome type | Predictor type(s) | Key assumptions | How you will check them |
+|---|---|---|---|---|---|
+| TODO | TODO | TODO | TODO | TODO | TODO |
+| TODO | TODO | TODO | TODO | TODO | TODO |
+
+: Models used and their assumptions {#tbl-models}
+
+TODO: For each model, explain:
+
+- **Why this model fits your question and data types.** Example: "The outcome
+  is numeric and the predictor has three groups, so a one-way ANOVA compares
+  the group means."
+- **What alternatives you considered** and why you rejected them.
+- **What you will do if an assumption fails.** Examples: a nonparametric test
+  such as Wilcoxon or Kruskal-Wallis, a transformation, or a different model.
+
+## A method not covered in class (only if you use one)
+
+TODO: If you use a method we did not cover in class, explain it here in your
+own words. Cover how it works, what its output means, its assumptions, why it
+suits your data better than the methods from class, and at least one citation
+`[@key]`. If you only use methods from class, delete this subsection.
+
+# Results {#sec-results}
+
+TODO: Make one subsection per hypothesis. In each one, check the model's
+assumptions (with a plot or test), fit the model, and report:
+
+- the test statistic, degrees of freedom (if any) and **p-value**;
+- a **confidence interval** or another measure of uncertainty;
+- an **effect size** or performance metric (e.g., difference in means,
+  Cohen's d, R², η², odds ratio, accuracy on held-out test data);
+- your **decision**: reject H~0~ or fail to reject H~0~ at α = 0.05; and
+- a plain-language sentence that someone without statistics training could
+  understand.
+
+For predictive models (decision trees, neural networks, ...), split the data
+into training and test sets and report performance on the **test** set.
+
+## Hypothesis 1
+
+```{r}
+#| label: h1-model
+
+# TODO: Check assumptions, fit the model for Hypothesis 1 and show the results.
+```
+
+TODO: Report and interpret the results for Hypothesis 1.
+
+## Hypothesis 2
+
+```{r}
+#| label: h2-model
+
+# TODO: Check assumptions, fit the model for Hypothesis 2 and show the results.
+```
+
+TODO: Report and interpret the results for Hypothesis 2.
+
+## Hypothesis 3 (pairs only)
+
+```{r}
+#| label: h3-model
+
+# TODO: Check assumptions, fit the model for Hypothesis 3 and show the results.
+# Delete this subsection if you are working individually.
+```
+
+TODO: Report and interpret the results for Hypothesis 3.
+
+## Robustness check (pairs only)
+
+TODO: Check whether one main result holds up when you change an analysis
+choice, for example: a nonparametric test instead of a parametric one, keeping
+or removing outliers, a different subset of years or groups, or a different
+model. Report whether the conclusion changes. Delete this subsection if you are
+working individually.
+
+::: {.callout-note collapse="true"}
+## EXAMPLE: reporting results (delete this block)
+
+**Hypothesis 1: Welch two-sample t-test.**
+
+```{r}
+#| label: example-h1
+
+h1 <- t.test(len ~ supp, data = tooth)  # Welch: does not assume equal variances
+h1
+```
+
+*Result:* The mean tooth length was `r round(h1$estimate[1], 1)` for orange juice
+and `r round(h1$estimate[2], 1)` for ascorbic acid,
+t(`r round(h1$parameter, 1)`) = `r round(h1$statistic, 2)`,
+p = `r signif(h1$p.value, 2)`, 95% CI for the difference
+[`r round(h1$conf.int[1], 2)`, `r round(h1$conf.int[2], 2)`].
+Because p > 0.05 and the interval includes 0, we **fail to reject H~0~**.
+Averaged over all doses, the data do not show a clear difference between the
+supplements.
+
+**Hypothesis 2: two-way ANOVA with interaction.**
+
+```{r}
+#| label: fig-example-h2
+#| fig-cap: "EXAMPLE: Residual diagnostics for the two-way ANOVA."
+#| fig-height: 4
+
+h2 <- aov(len ~ dose * supp, data = tooth)
+summary(h2)
+
+par(mfrow = c(1, 2))
+plot(h2, which = 1:2)  # residuals vs fitted (equal variance), Q-Q (normality)
+```
+
+*Result:* Dose, supplement and their interaction are all significant
+(p < 0.05), so we **reject H~0~**. The residual plots show roughly constant
+spread and approximately normal residuals, so the ANOVA assumptions are
+reasonable. Notice that supplement type *is* significant once dose is taken
+into account, even though the simple t-test in Hypothesis 1 was not. Controlling
+for another variable can change a conclusion.
+:::
+
+# Conclusions {#sec-conclusions}
+
+## Summary of findings
+
+TODO: Complete the table, then answer your research question directly in one
+or two paragraphs.
+
+| # | Hypothesis (short) | Model / test | Key statistic and p-value | Decision |
+|---|---|---|---|---|
+| 1 | TODO | TODO | TODO | TODO |
+| 2 | TODO | TODO | TODO | TODO |
+| 3 | TODO (pairs only) | TODO | TODO | TODO |
+
+: Summary of hypothesis tests {#tbl-summary}
+
+## Answer to the research question
+
+TODO: Answer your research question. Relate your findings to the literature
+you cited in @sec-intro. Do your results agree with prior work?
+
+## Limitations
+
+TODO: Discuss the limitations of your data and methods, such as sample size,
+missing data, sampling bias, measurement error, failed assumptions, and
+correlation versus causation. Explain how each one could affect your
+conclusions.
+
+## Future work
+
+TODO: What would you study next, and what data or methods would you need?
+
+# Reproducibility {.unnumbered}
+
+```{r}
+#| label: session-info
+#| code-fold: true
+sessionInfo()
+```
+
+# References {.unnumbered}
+
+::: {#refs}
+:::

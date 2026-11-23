@@ -1,0 +1,78 @@
+# Build workflow for the CS301 final project.
+#
+# On every push or pull request to main, this workflow:
+#   1. runs GatorGrade (config/gatorgrade.yml) to check that all parts are done,
+#   2. runs src/analysis.r from top to bottom, and
+#   3. renders writing/report.qmd with Quarto.
+# A green check mark means every step passed. Click a red X to see which step
+# failed and why.
+name: build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # full history, so GatorGrade can count commits
+
+      # ---------------------------------------------------------------
+      # GatorGrade runs BEFORE rendering, so the check for a committed
+      # writing/report.html looks at your files, not at CI output.
+      # ---------------------------------------------------------------
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run GatorGrade
+        if: always()
+        run: |
+          pipx install gatorgrade
+          pipx inject gatorgrade 'click==8.1.7' --force
+          gatorgrade --config config/gatorgrade.yml
+
+      # ---------------------------------------------------------------
+      # R, packages and Quarto
+      # ---------------------------------------------------------------
+      - name: Set up R
+        if: always()
+        uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      # Pre-installs common packages as fast binaries. If your project uses a
+      # package that is not listed here, add it as "any::packagename".
+      - name: Install R packages
+        if: always()
+        uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          packages: |
+            any::tidyverse
+            any::plotly
+            any::rmarkdown
+            any::knitr
+            any::broom
+            any::car
+            any::rpart.plot
+            any::randomForest
+            any::nnet
+
+      - name: Set up Quarto
+        if: always()
+        uses: quarto-dev/quarto-actions/setup@v2
+
+      - name: Run src/analysis.r
+        if: always()
+        run: Rscript src/analysis.r
+
+      - name: Render writing/report.qmd
+        if: always()
+        run: quarto render writing/report.qmd
